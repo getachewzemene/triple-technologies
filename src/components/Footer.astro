@@ -11,7 +11,10 @@ const serviceList = language === 'am' ? amharicServices : services;
   <div class="container topbar">
     <div class="cta-block">
       <p class="cta-label">Ready to get practical?</p>
-      <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+      <div class="cta-links">
+        <a href={`tel:${site.contact.phone.replace(/\s+/g, '')}`}>Call {site.contact.phone}</a>
+        <a href={site.contact.whatsapp} target="_blank" rel="noreferrer">WhatsApp</a>
+      </div>
     </div>
   </div>
   <div class="container inner">
@@ -45,6 +48,7 @@ const serviceList = language === 'am' ? amharicServices : services;
     padding: 1rem 1.25rem; border: 1px solid rgba(173, 193, 212, 0.2); border-radius: 1rem; background: rgba(255,255,255,0.02);
   }
   .cta-label { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+  .cta-links { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
   .cta-block a { color: var(--text-on-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 0.25em; }
   .inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr); gap: 2.5rem; }
   .name { display: flex; align-items: center; gap: 0.7rem; color: var(--text-on-ink); font-weight: 600; font-size: 1.1rem; }

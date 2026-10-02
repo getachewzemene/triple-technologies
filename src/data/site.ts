@@ -12,9 +12,9 @@ export const site = {
     'Triple Technologies is an Ethiopian technology company providing software development, IT training and consultancy, CCTV and security systems, and digital services for businesses and organizations.',
   contact: {
     email: 'tripletechnologies3@gmail.com',
-    phone: '',
+    phone: '+251 94 528 2035',
     telegram: '', // e.g. 'https://t.me/yourhandle'
-    whatsapp: '', // e.g. 'https://wa.me/251XXXXXXXXX'
+    whatsapp: 'https://wa.me/251945282035',
   },
   formEndpoint: '',
 };

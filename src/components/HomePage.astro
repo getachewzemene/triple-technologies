@@ -12,6 +12,38 @@ import { messages, type Language } from '../data/locales';
 interface Props { language?: Language; }
 const { language = 'en' } = Astro.props;
 const copy = messages[language];
+
+const trustMetrics = [
+  { value: '1,000+', label: 'homes secured' },
+  { value: '4,000+', label: 'happy clients' },
+  { value: '24/7', label: 'remote monitoring support' },
+  { value: 'Ethiopia', label: 'local coverage' },
+];
+
+const projects = [
+  { title: 'Home CCTV installation', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80', tag: 'Residential' },
+  { title: 'Retail shop protection', image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80', tag: 'Business' },
+  { title: 'Office monitoring system', image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80', tag: 'Corporate' },
+];
+
+const packages = [
+  { name: 'Home Security', price: 'From 10,000 Birr', detail: 'Basic CCTV protection for homes and apartments.' },
+  { name: 'Business Protection', price: 'Custom quote', detail: 'Commercial surveillance and monitoring coverage.' },
+  { name: 'Smart Monitoring', price: 'Custom quote', detail: 'Remote access, alerts, and ongoing support.' },
+];
+
+const testimonials = [
+  { quote: 'The team was professional from the first visit to the final setup. Our shop is safer and we can monitor it from anywhere.', name: 'Abel M.', role: 'Retail owner', email: 'abel@example.com' },
+  { quote: 'They understood exactly what we needed for our home and explained everything in simple terms. Highly recommended.', name: 'Selam T.', role: 'Homeowner', email: 'selam@example.com' },
+  { quote: 'The installation was clean, fast and reliable. We now have full visibility across our office and warehouse.', name: 'Daniel K.', role: 'Operations manager', email: 'daniel@example.com' },
+];
+
+const faqs = [
+  { q: 'How long does installation take?', a: 'Most home installations are completed within a day, while larger business projects are scheduled based on scope and site size.' },
+  { q: 'Can I view cameras from my phone?', a: 'Yes. We configure remote access so you can monitor your property from your phone or computer.' },
+  { q: 'Do you provide maintenance?', a: 'Yes. We offer support, maintenance and system upgrades after installation to keep everything running smoothly.' },
+  { q: 'Do you install for homes and businesses?', a: 'Yes. We work with homes, shops, offices, warehouses and growing businesses across Ethiopia.' },
+];
 ---
 <Base title={copy.title} description={copy.description} language={language}>
   <Header language={language} />
@@ -19,13 +51,144 @@ const copy = messages[language];
     <Hero language={language} />
     <Services language={language} />
     <Experience language={language} />
+    <section class="trust-strip" aria-label={copy.trustLabel}>
+      <div class="container trust-grid">
+        {trustMetrics.map((metric) => (
+          <div class="trust-item">
+            <strong>{metric.value}</strong>
+            <span>{metric.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
     <Why language={language} />
     <Process language={language} />
+    <section class="packages" aria-labelledby="packages-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Packages</p>
+          <h2 id="packages-title">Simple options for homes, shops and growing businesses.</h2>
+        </div>
+        <div class="package-grid">
+          {packages.map((plan) => (
+            <article class="package-card">
+              <span class="package-badge">{plan.name}</span>
+              <h3>{plan.price}</h3>
+              <p>{plan.detail}</p>
+              <a href="#contact" class="btn btn-primary">Get a quote</a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="testimonials" id="testimonials" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Testimonials</p>
+          <h2 id="testimonials-title">What clients say after the installation.</h2>
+        </div>
+        <div class="testimonial-grid">
+          {testimonials.map((item) => (
+            <article class="testimonial-card">
+              <div class="stars" aria-label="5 star review">★★★★★</div>
+              <p>“{item.quote}”</p>
+              <div class="person">
+                <strong>{item.name}</strong>
+                <span>{item.role}</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Reviews</p>
+          <h2 id="reviews-title">Client feedback from real projects.</h2>
+        </div>
+
+        <div class="review-layout">
+          <form class="review-form" id="review-form" novalidate>
+            <div class="field">
+              <label for="review-name">{copy.reviewNameLabel}</label>
+              <input id="review-name" name="name" type="text" required />
+            </div>
+            <div class="field">
+              <label for="review-email">{copy.reviewEmailLabel}</label>
+              <input id="review-email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="review-message">{copy.reviewMessageLabel}</label>
+              <textarea id="review-message" name="message" rows="4" required></textarea>
+            </div>
+            <div class="field rating-field">
+              <label>Rating</label>
+              <div class="rating-picker" role="radiogroup" aria-label="Select a rating">
+                {[5, 4, 3, 2, 1].map((value) => (
+                  <button type="button" class={`star-button ${value === 5 ? 'is-active' : ''}`} data-rating={value} aria-label={`${value} star rating`} aria-pressed={value === 5}>
+                    ★
+                  </button>
+                ))}
+              </div>
+              <input type="hidden" name="rating" value="5" />
+            </div>
+            <button class="btn btn-primary" type="submit">{copy.reviewSubmit}</button>
+            <p class="review-status" id="review-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="review-list" id="reviews-list">
+            {testimonials.map((item) => (
+              <article class="review-card shimmer-card">
+                <div class="stars" aria-label="5 star review">★★★★★</div>
+                <p>“{item.quote}”</p>
+                <div class="person">
+                  <strong>{item.name}</strong>
+                  <span>{item.email}</span>
+                  <small>{item.role}</small>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head narrow">
+          <p class="eyebrow">FAQ</p>
+          <h2 id="faq-title">Common questions before installation.</h2>
+        </div>
+        <div class="faq-list">
+          {faqs.map((item) => (
+            <div class="faq-item">
+              <h3>{item.q}</h3>
+              <p>{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
     <Contact language={language} />
   </main>
   <Footer language={language} />
 
+  <div class="page-shimmer" aria-hidden="true"></div>
+
+  <div class="floating-cta" aria-label="Quick contact actions">
+    <a class="btn btn-primary" href="https://wa.me/251945282035" target="_blank" rel="noreferrer">WhatsApp</a>
+    <a class="btn btn-secondary" href="tel:+251945282035">Call 0945282035</a>
+  </div>
+
   <script>
+    document.body.classList.add('is-loading');
+    window.addEventListener('load', () => {
+      requestAnimationFrame(() => {
+        document.body.classList.remove('is-loading');
+        document.body.classList.add('is-loaded');
+      });
+    });
+
     const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
     const nav = document.getElementById('site-nav');
     if (toggle && nav) {
@@ -102,5 +265,300 @@ const copy = messages[language];
         }
       });
     }
+
+    const reviewForm = document.getElementById('review-form') as HTMLFormElement | null;
+    const reviewStatus = document.getElementById('review-status');
+    const reviewList = document.getElementById('reviews-list');
+    const reviewStorageKey = 'triple-technologies-reviews';
+
+    const renderStars = (rating: number) => Array.from({ length: 5 }, (_, index) => index < rating ? '★' : '☆').join('');
+
+    const buildReviewCard = (name: string, email: string, text: string, rating = 5) => {
+      const article = document.createElement('article');
+      article.className = 'review-card shimmer-card';
+      article.innerHTML = `
+        <div class="stars" aria-label="${rating} star review">${renderStars(rating)}</div>
+        <p>“${text}”</p>
+        <div class="person">
+          <strong>${name}</strong>
+          <span>${email}</span>
+          <small>Verified client</small>
+        </div>
+      `;
+      setTimeout(() => article.classList.remove('shimmer-card'), 450);
+      return article;
+    };
+
+    if (reviewForm && reviewStatus && reviewList) {
+      const saved = JSON.parse(localStorage.getItem(reviewStorageKey) || '[]');
+      saved.forEach((item: { name: string; email: string; message: string; rating?: number }) => {
+        reviewList.appendChild(buildReviewCard(item.name, item.email, item.message, item.rating ?? 5));
+      });
+
+      const reviewButtons = reviewForm.querySelectorAll<HTMLButtonElement>('.star-button');
+      const ratingInput = reviewForm.querySelector<HTMLInputElement>('input[name="rating"]');
+      reviewButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const value = Number(button.dataset.rating || 5);
+          reviewButtons.forEach((star) => {
+            const active = Number(star.dataset.rating || 5) <= value;
+            star.classList.toggle('is-active', active);
+            star.setAttribute('aria-pressed', String(active));
+          });
+          if (ratingInput) ratingInput.value = String(value);
+        });
+      });
+
+      reviewForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(reviewForm);
+        const name = String(formData.get('name') || '').trim();
+        const email = String(formData.get('email') || '').trim();
+        const message = String(formData.get('message') || '').trim();
+        const rating = Number(formData.get('rating') || 5);
+
+        if (!name || !email || !message) {
+          reviewStatus.textContent = 'Please complete all fields before submitting your review.';
+          reviewStatus.dataset.state = 'error';
+          return;
+        }
+
+        const payload = { name, email, message, rating };
+        const current = JSON.parse(localStorage.getItem(reviewStorageKey) || '[]');
+        const next = [payload, ...current].slice(0, 6);
+        localStorage.setItem(reviewStorageKey, JSON.stringify(next));
+
+        reviewList.prepend(buildReviewCard(name, email, message, rating));
+        reviewForm.reset();
+        if (ratingInput) ratingInput.value = '5';
+        reviewButtons.forEach((star) => {
+          const active = Number(star.dataset.rating || 5) <= 5;
+          star.classList.toggle('is-active', active);
+          star.setAttribute('aria-pressed', String(active));
+        });
+        reviewStatus.textContent = 'Thank you. Your review has been added.';
+        reviewStatus.dataset.state = 'success';
+      });
+    }
   </script>
+
+  <style>
+    .page-shimmer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 35%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.2) 65%, rgba(255,255,255,0) 100%);
+      transform: translateX(-120%);
+      animation: pageShimmer 1.4s ease-in-out infinite;
+      mix-blend-mode: screen;
+      opacity: 0.9;
+    }
+    body.is-loaded .page-shimmer {
+      animation: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    @keyframes pageShimmer {
+      0% { transform: translateX(-130%); }
+      100% { transform: translateX(130%); }
+    }
+    .trust-strip {
+      background: linear-gradient(180deg, #eff3f5 0%, #e8edf1 100%);
+      border-bottom: 1px solid rgba(19, 35, 52, 0.08);
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      padding-block: 1.4rem;
+    }
+    .trust-item {
+      display: grid;
+      gap: 0.2rem;
+      justify-items: center;
+      text-align: center;
+      padding: 1rem 0.75rem;
+      border-radius: 0.9rem;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(19,35,52,0.06);
+    }
+    .trust-item strong {
+      font-size: clamp(1.25rem, 2vw, 1.9rem);
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .trust-item span {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .floating-cta {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 60;
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: 1rem;
+      background: rgba(10, 18, 26, 0.86); border: 1px solid rgba(173, 193, 212, 0.18);
+      box-shadow: 0 18px 40px rgba(2, 9, 12, 0.28); backdrop-filter: blur(10px);
+    }
+    .floating-cta .btn { min-height: 2.8rem; padding: 0.7rem 1rem; font-size: 0.92rem; }
+    .floating-cta .btn-secondary { color: var(--text-on-ink); }
+    .projects, .packages, .testimonials, .reviews, .faq {
+      padding-block: var(--section);
+    }
+    .section-head {
+      display: grid;
+      gap: 0.8rem;
+      max-width: 48rem;
+      margin-bottom: 2rem;
+    }
+    .eyebrow {
+      margin: 0;
+      color: var(--blue-text);
+      font-size: var(--step--1);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .section-head h2 {
+      font-size: var(--step-3);
+      margin: 0;
+    }
+    .project-grid, .package-grid, .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+    .project-card, .package-card, .testimonial-card, .faq-item {
+      background: #fff;
+      border: 1px solid rgba(19,35,52,0.08);
+      border-radius: 1rem;
+      box-shadow: 0 10px 26px rgba(12, 22, 30, 0.05);
+    }
+    .project-image {
+      height: 16rem;
+      background-size: cover;
+      background-position: center;
+      border-radius: 1rem 1rem 0 0;
+    }
+    .project-body {
+      display: grid;
+      gap: 0.6rem;
+      padding: 1.1rem 1.1rem 1.3rem;
+    }
+    .project-body span {
+      color: var(--blue-text);
+      font-size: var(--step--1);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .project-body h3 { margin: 0; }
+    .package-card {
+      display: grid;
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+    .package-badge {
+      display: inline-block;
+      width: fit-content;
+      padding: 0.45rem 0.7rem;
+      background: #edf5fb;
+      color: var(--blue-text);
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+    .package-card h3 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2vw, 2.2rem);
+    }
+    .package-card p {
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .packages .btn { justify-self: start; }
+    .testimonial-card {
+      display: grid;
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+    .stars { color: var(--gold); letter-spacing: 0.18em; }
+    .testimonial-card p { color: var(--text); margin: 0; line-height: 1.6; }
+    .person { display: grid; gap: 0.15rem; }
+    .person strong { font-size: 0.95rem; }
+    .person span { color: var(--text-muted); font-size: 0.8rem; }
+    .person small { color: var(--text-muted); font-size: 0.72rem; }
+
+    .review-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .review-form {
+      display: grid;
+      gap: 1rem;
+      background: #fff;
+      border: 1px solid rgba(19,35,52,0.08);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 26px rgba(12, 22, 30, 0.05);
+    }
+    .field { display: grid; gap: 0.45rem; }
+    .field label { font-weight: 600; font-size: var(--step--1); }
+    .field input, .field textarea {
+      width: 100%; font: inherit; color: var(--text); background: #f5f7f9; border: 1px solid rgba(19,35,52,0.12); border-radius: 0.9rem; padding: 0.85rem 0.95rem; min-height: 3rem;
+    }
+    .field textarea { resize: vertical; min-height: 7rem; }
+    .rating-field { margin-top: 0.25rem; }
+    .rating-picker { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .star-button {
+      width: 2.4rem; height: 2.4rem; border: 1px solid rgba(19,35,52,0.12); border-radius: 999px; background: #f7f9fb; color: #d0d8df; font-size: 1.2rem; cursor: pointer; transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    }
+    .star-button:hover, .star-button.is-active { transform: translateY(-1px); border-color: rgba(240, 185, 58, 0.8); background: rgba(240, 185, 58, 0.12); color: var(--gold); }
+    .review-status { min-height: 1.25rem; margin: 0; color: var(--text-muted); font-size: var(--step--1); }
+    .review-status[data-state='success'] { color: #1f7a4a; }
+    .review-status[data-state='error'] { color: #b23d2b; }
+    .review-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .review-card {
+      background: #fff;
+      border: 1px solid rgba(19,35,52,0.08);
+      border-radius: 1rem;
+      box-shadow: 0 10px 26px rgba(12, 22, 30, 0.05);
+      display: grid;
+      gap: 1rem;
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .review-card p { color: var(--text); margin: 0; line-height: 1.6; }
+    .faq-list {
+      display: grid;
+      gap: 1rem;
+      max-width: 56rem;
+    }
+    .faq-item {
+      padding: 1.3rem 1.4rem;
+    }
+    .faq-item h3 { font-size: var(--step-1); margin: 0 0 0.4rem; }
+    .faq-item p { color: var(--text-muted); margin: 0; }
+
+    @media (max-width: 900px) {
+      .trust-grid, .project-grid, .package-grid, .testimonial-grid, .review-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .review-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .trust-grid, .project-grid, .package-grid, .testimonial-grid, .review-list { grid-template-columns: 1fr; }
+      .project-image { height: 14rem; }
+      .floating-cta {
+        left: 0.75rem; right: 0.75rem; bottom: 0.75rem; justify-content: center;
+        gap: 0.5rem; flex-wrap: wrap;
+      }
+      .floating-cta .btn { flex: 1 1 11rem; }
+    }
+  </style>
 </Base>

@@ -10,11 +10,16 @@ const copy = messages[language];
     <div class="copy">
       <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>{copy.heroEyebrow}</p>
       <h1 id="hero-title">Reliable technology for businesses that need it to work.</h1>
-      <p class="lead">Triple Technologies supports homes, shops and growing businesses with software, security systems, training and digital services built for real day-to-day operations.</p>
+      <p class="lead">Triple Technologies helps homes, shops and growing businesses across Ethiopia with practical CCTV, software, training and support that is built for daily use.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="#contact">{copy.startConversation}</a>
-        <a class="btn btn-secondary" href="#services">{copy.seeServices}</a>
+        <a class="btn btn-primary" href="https://wa.me/251945282035" target="_blank" rel="noreferrer">WhatsApp now</a>
+        <a class="btn btn-secondary" href="tel:+251945282035">Call now</a>
       </div>
+      <ul class="hero-proof" aria-label="Triple Technologies proof points">
+        <li>1,000+ homes secured</li>
+        <li>4,000+ happy clients</li>
+        <li>Serving Ethiopia</li>
+      </ul>
     </div>
     <figure class="hero-visual">
       <img
@@ -37,6 +42,14 @@ const copy = messages[language];
   .lead { margin-top: 1.5rem; font-size: var(--step-1); line-height: 1.55; color: var(--text-on-ink-muted); max-width: 33rem; }
   .actions { margin-top: 2.25rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
   .btn-secondary { color: var(--text-on-ink); }
+  .hero-proof {
+    display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; padding: 0;
+  }
+  .hero-proof li {
+    list-style: none; display: inline-flex; align-items: center; padding: 0.5rem 0.8rem;
+    border: 1px solid rgba(244, 206, 100, 0.25); border-radius: 999px; background: rgba(255,255,255,0.03);
+    color: var(--text-on-ink); font-size: 0.77rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  }
   .hero-visual { position: relative; margin: 0; padding: 0 0 2.1rem 1.4rem; }
   .hero-visual::before { content: ''; position: absolute; inset: 1.25rem 0 3.25rem 0; border-radius: 1.25rem; border: 1px solid rgba(166, 185, 210, 0.38); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22); }
   .hero-visual img { position: relative; width: 100%; height: clamp(24rem, 37vw, 32rem); object-fit: contain; object-position: center; background: linear-gradient(180deg, #ffffff 0%, #edf2f5 100%); border-radius: 1.1rem; box-shadow: 0 32px 56px rgba(0, 0, 0, 0.3); }

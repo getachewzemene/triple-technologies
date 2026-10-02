@@ -7,8 +7,10 @@ const { language = 'en' } = Astro.props;
 const copy = messages[language];
 const links = [
   { href: '#services', label: copy.navServices },
-  { href: '#why', label: copy.navWhy },
-  { href: '#process', label: copy.navProcess },
+  { href: '#projects', label: copy.navProjects },
+  { href: '#testimonials', label: copy.navTestimonials },
+  { href: '#faq', label: copy.navFaq },
+  { href: '#contact', label: copy.navContact },
 ];
 const languageHref = language === 'en' ? '/am/' : '/';
 ---

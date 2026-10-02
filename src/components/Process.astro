@@ -1,0 +1,39 @@
+---
+import { steps } from '../data/site';
+import { amharicSteps, messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+const stepList = language === 'am' ? amharicSteps : steps;
+---
+<section class="process" id="process" aria-labelledby="process-title">
+  <div class="container">
+    <div class="heading-block">
+      <p class="eyebrow">How we work</p>
+      <h2 id="process-title">{copy.processTitle}</h2>
+    </div>
+    <ol class="steps">
+      {stepList.map((s, i) => (
+        <li>
+          <span class="n" aria-hidden="true">{i + 1}</span>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process { padding-block: var(--section); background: #eef4f7; }
+  .heading-block { display: grid; gap: 0.8rem; max-width: 40rem; }
+  .eyebrow { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-text); }
+  h2 { font-size: var(--step-3); }
+  .steps { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .steps li { position: relative; padding: 1.5rem 1.25rem 1.25rem; background: rgba(255,255,255,0.7); border: 1px solid rgba(19,35,52,0.08); border-top: 3px solid var(--blue); border-radius: 1rem; display: grid; gap: 0.7rem; align-content: start; }
+  .n { font-size: var(--step-2); font-weight: 700; color: var(--blue-text); line-height: 1; }
+  h3 { font-size: var(--step-1); }
+  p { color: var(--text-muted); }
+  @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; gap: 1rem; } }
+</style>

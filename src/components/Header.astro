@@ -1,0 +1,72 @@
+---
+import Mark from './Mark.astro';
+import { site } from '../data/site';
+import { messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+const links = [
+  { href: '#services', label: copy.navServices },
+  { href: '#why', label: copy.navWhy },
+  { href: '#process', label: copy.navProcess },
+];
+const languageHref = language === 'en' ? '/am/' : '/';
+---
+<header class="site-header on-ink">
+  <div class="container bar">
+    <a class="brand" href="#top" aria-label={`${site.name}, home`}>
+      <Mark class="brand-mark" />
+      <span>{site.name}</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="visually-hidden">{copy.menu}</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label={copy.mainNav}>
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <a class="language-link" href={languageHref} aria-label={copy.languageLabel}>{copy.languageLink}</a>
+      <a class="btn btn-primary nav-cta" href="#contact">{copy.navContact}</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; background: var(--ink); color: var(--text-on-ink); border-bottom: 1px solid var(--line-on-ink); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.25rem; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: -0.01em; }
+  .brand :global(.brand-mark) { width: 2rem; height: auto; flex: none; }
+  .brand span { white-space: nowrap; }
+  .nav { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .nav ul { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  .nav a:not(.btn) { text-decoration: none; color: var(--text-on-ink-muted); font-weight: 500; padding: 0.5rem 0; border-bottom: 2px solid transparent; }
+  .nav a:not(.btn):hover { color: var(--text-on-ink); border-bottom-color: var(--gold); }
+  .nav-cta { min-height: 2.5rem; padding: 0.4rem 1.1rem; font-size: var(--step--1); }
+  .language-link { color: var(--text-on-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 0.25em; }
+  .menu-toggle { display: none; }
+
+  @media (max-width: 760px) {
+    :global(.js) .menu-toggle {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 2.75rem; height: 2.75rem; background: none; color: inherit; border: 1px solid var(--line-on-ink); border-radius: var(--radius); cursor: pointer;
+    }
+    .bars, .bars::before, .bars::after { display: block; width: 1.2rem; height: 2px; background: currentColor; position: relative; transition: transform 0.2s ease; }
+    .bars::before, .bars::after { content: ''; position: absolute; left: 0; }
+    .bars::before { top: -6px; }
+    .bars::after { top: 6px; }
+    .menu-toggle[aria-expanded='true'] .bars { background: transparent; }
+    .menu-toggle[aria-expanded='true'] .bars::before { top: 0; transform: rotate(45deg); }
+    .menu-toggle[aria-expanded='true'] .bars::after { top: 0; transform: rotate(-45deg); }
+
+    .nav { width: 100%; flex-direction: column; align-items: stretch; gap: 0; padding-bottom: 1rem; }
+    .nav ul { flex-direction: column; gap: 0; }
+    .nav li a { display: block; padding: 0.85rem 0 !important; border-top: 1px solid var(--line-on-ink); }
+    .language-link { align-self: start; padding-block: 0.85rem; }
+    .nav-cta { margin-top: 0.75rem; min-height: 3rem; }
+    :global(.js) .nav { display: none; }
+    :global(.js) .nav.open { display: flex; }
+  }
+</style>

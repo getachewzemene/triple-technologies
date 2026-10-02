@@ -1,0 +1,41 @@
+---
+import { messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+---
+<section class="experience" aria-labelledby="experience-title">
+  <div class="container">
+    <div class="intro">
+      <p class="eyebrow">Trusted results</p>
+      <h2 id="experience-title">{copy.experienceTitle}</h2>
+      <p>{copy.experienceIntro}</p>
+    </div>
+    <div class="trust-panel">
+      <dl class="stats">
+        {copy.experienceStats.map((stat) => (
+          <div class="stat">
+            <dt>{stat.value}</dt>
+            <dd>{stat.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience { padding-block: clamp(3.5rem, 7vw, 6rem); background: linear-gradient(180deg, #f5c75b 0%, #efb744 100%); color: var(--ink); }
+  .intro { display: grid; gap: 0.75rem; max-width: 42rem; }
+  .eyebrow { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(14, 26, 38, 0.72); }
+  h2 { font-size: var(--step-3); }
+  .intro p:last-child { font-size: var(--step-1); line-height: 1.5; }
+  .trust-panel {
+    margin-top: clamp(2.25rem, 5vw, 3.5rem); background: rgba(255,255,255,0.2); border: 1px solid rgba(14, 26, 38, 0.12); border-radius: 1.5rem; box-shadow: 0 18px 42px rgba(14, 26, 38, 0.08); padding: clamp(1.2rem, 3vw, 2rem);
+  }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin: 0; }
+  .stat { padding: 1.2rem 1rem; border-radius: 1rem; background: rgba(255,255,255,0.3); border: 1px solid rgba(14,26,38,0.08); }
+  .stat dt { font-size: clamp(1.8rem, 3vw, 2.7rem); font-weight: 700; line-height: 1.1; }
+  .stat dd { margin: 0.65rem 0 0; font-weight: 500; line-height: 1.4; }
+  @media (max-width: 680px) { .stats { grid-template-columns: 1fr; gap: 1rem; } }
+</style>

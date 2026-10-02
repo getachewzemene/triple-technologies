@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Services from './Services.astro';
+import Experience from './Experience.astro';
+import Why from './Why.astro';
+import Process from './Process.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import { messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+---
+<Base title={copy.title} description={copy.description} language={language}>
+  <Header language={language} />
+  <main id="main">
+    <Hero language={language} />
+    <Services language={language} />
+    <Experience language={language} />
+    <Why language={language} />
+    <Process language={language} />
+    <Contact language={language} />
+  </main>
+  <Footer language={language} />
+
+  <script>
+    const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const nav = document.getElementById('site-nav');
+    if (toggle && nav) {
+      const set = (open: boolean) => {
+        toggle.setAttribute('aria-expanded', String(open));
+        nav.classList.toggle('open', open);
+      };
+      toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+      nav.addEventListener('click', (event) => {
+        if ((event.target as HTMLElement).closest('a')) set(false);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+          set(false);
+          toggle.focus();
+        }
+      });
+    }
+
+    const serviceSelect = document.getElementById('f-service') as HTMLSelectElement | null;
+    document.querySelectorAll<HTMLAnchorElement>('a[data-service]').forEach((anchor) => {
+      anchor.addEventListener('click', () => {
+        if (serviceSelect) serviceSelect.value = anchor.dataset.service || '';
+      });
+    });
+
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const status = document.getElementById('form-status');
+    if (form && status) {
+      const say = (message: string, state: 'ok' | 'error') => {
+        status.textContent = message;
+        status.dataset.state = state;
+      };
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const required = ['name', 'contact', 'message'];
+        let firstBad: HTMLElement | null = null;
+        required.forEach((name) => {
+          const field = form.elements.namedItem(name) as HTMLInputElement;
+          const invalid = !String(data.get(name) || '').trim();
+          field.setAttribute('aria-invalid', String(invalid));
+          if (invalid && !firstBad) firstBad = field;
+        });
+        if (firstBad) {
+          say(form.dataset.requiredError || '', 'error');
+          (firstBad as HTMLElement).focus();
+          return;
+        }
+
+        const { endpoint, email, site } = form.dataset;
+        const selectedService = form.elements.namedItem('service') as HTMLSelectElement;
+        const serviceLabel = selectedService.selectedOptions[0]?.textContent || '';
+        if (endpoint) {
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              body: data,
+              headers: { Accept: 'application/json' },
+            });
+            if (!response.ok) throw new Error(String(response.status));
+            form.reset();
+            say(form.dataset.sentSuccess || '', 'ok');
+          } catch {
+            say(form.dataset.sentFailure || '', 'error');
+          }
+        } else if (email) {
+          const label = (field: string) => form.querySelector<HTMLLabelElement>(`label[for="f-${field}"]`)?.textContent?.trim() || field;
+          const body = `${label('name')}: ${data.get('name')}\n${label('reach')}: ${data.get('contact')}\n${label('service')}: ${serviceLabel}\n\n${data.get('message')}`;
+          window.location.href = `mailto:${email}?subject=${encodeURIComponent(`${form.dataset.emailSubject} ${site}`)}&body=${encodeURIComponent(body)}`;
+          say(form.dataset.emailAppMessage || '', 'ok');
+        } else {
+          say(form.dataset.formNotConnected || '', 'error');
+        }
+      });
+    }
+  </script>
+</Base>

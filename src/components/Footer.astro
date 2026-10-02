@@ -1,0 +1,59 @@
+---
+import Mark from './Mark.astro';
+import { site, services } from '../data/site';
+import { amharicServices, messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+const serviceList = language === 'am' ? amharicServices : services;
+---
+<footer class="footer on-ink">
+  <div class="container topbar">
+    <div class="cta-block">
+      <p class="cta-label">Ready to get practical?</p>
+      <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+    </div>
+  </div>
+  <div class="container inner">
+    <div class="who">
+      <p class="name"><Mark class="mark" /> {site.name}</p>
+      <p class="desc">{copy.footerDescription}</p>
+    </div>
+    <nav aria-label={copy.footerServices}>
+      <h2>{copy.footerServices}</h2>
+      <ul>
+        {serviceList.map((s) => <li><a href={`#${s.id}`}>{s.name}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-label={copy.footerCompany}>
+      <h2>{copy.footerCompany}</h2>
+      <ul>
+        <li><a href="#why">{copy.footerWhy}</a></li>
+        <li><a href="#process">{copy.footerProcess}</a></li>
+        <li><a href="#contact">{copy.footerContact}</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container"><p class="legal">&copy; {new Date().getFullYear()} {site.name}. {copy.allRightsReserved}</p></div>
+</footer>
+
+<style>
+  .footer { background: linear-gradient(180deg, #0b1724 0%, #050d16 100%); color: var(--text-on-ink-muted); border-top: 1px solid var(--line-on-ink); padding-block: 3.5rem 2rem; }
+  .topbar { margin-bottom: 2.25rem; }
+  .cta-block {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    padding: 1rem 1.25rem; border: 1px solid rgba(173, 193, 212, 0.2); border-radius: 1rem; background: rgba(255,255,255,0.02);
+  }
+  .cta-label { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+  .cta-block a { color: var(--text-on-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 0.25em; }
+  .inner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr); gap: 2.5rem; }
+  .name { display: flex; align-items: center; gap: 0.7rem; color: var(--text-on-ink); font-weight: 600; font-size: 1.1rem; }
+  .name :global(.mark) { width: 1.75rem; height: auto; flex: none; }
+  .desc { margin-top: 1rem; max-width: 24rem; font-size: var(--step--1); }
+  h2 { font-size: var(--step--1); font-weight: 600; letter-spacing: 0; color: var(--text-on-ink); margin-bottom: 0.9rem; }
+  ul { display: grid; gap: 0.5rem; font-size: var(--step--1); }
+  a { text-decoration: none; }
+  a:hover { color: var(--text-on-ink); text-decoration: underline; text-underline-offset: 0.25em; }
+  .legal { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line-on-ink); font-size: var(--step--1); }
+  @media (max-width: 760px) { .inner { grid-template-columns: 1fr; } .cta-block { align-items: flex-start; flex-direction: column; } }
+</style>

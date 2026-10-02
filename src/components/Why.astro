@@ -1,0 +1,38 @@
+---
+import { reasons } from '../data/site';
+import { amharicReasons, messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+const reasonList = language === 'am' ? amharicReasons : reasons;
+---
+<section class="why" id="why" aria-labelledby="why-title">
+  <div class="container">
+    <div class="heading-block">
+      <p class="eyebrow">Why businesses choose us</p>
+      <h2 id="why-title">{copy.whyTitle}</h2>
+    </div>
+    <div class="grid">
+      {reasonList.map((r, index) => (
+        <div class="reason">
+          <span class="index">0{index + 1}</span>
+          <h3>{r.title}</h3>
+          <p>{r.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .why { background: var(--white); padding-block: var(--section); border-block: 1px solid var(--line); }
+  .heading-block { display: grid; gap: 0.8rem; max-width: 44rem; }
+  .eyebrow { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-text); }
+  h2 { font-size: var(--step-3); max-width: 42rem; }
+  .grid { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .reason { display: grid; gap: 0.7rem; align-content: start; padding: 1.5rem; background: #f8fafb; border: 1px solid var(--line); border-radius: 1rem; }
+  .index { color: var(--blue-text); font-weight: 700; font-size: var(--step--1); letter-spacing: 0.08em; }
+  .reason h3 { font-size: var(--step-1); }
+  .reason p { color: var(--text-muted); max-width: 30rem; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+</style>

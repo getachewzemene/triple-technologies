@@ -1,0 +1,64 @@
+---
+import Mark from './Mark.astro';
+import { messages, type Language } from '../data/locales';
+interface Props { language?: Language; }
+const { language = 'en' } = Astro.props;
+const copy = messages[language];
+---
+<section class="hero on-ink" id="top" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div class="copy">
+      <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span>{copy.heroEyebrow}</p>
+      <h1 id="hero-title">Reliable technology for businesses that need it to work.</h1>
+      <p class="lead">Triple Technologies supports homes, shops and growing businesses with software, security systems, training and digital services built for real day-to-day operations.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contact">{copy.startConversation}</a>
+        <a class="btn btn-secondary" href="#services">{copy.seeServices}</a>
+      </div>
+    </div>
+    <figure class="hero-visual">
+      <img
+        src="/cctv-product.png"
+        alt="Real outdoor CCTV security camera product shot"
+        fetchpriority="high"
+      />
+      <div class="visual-tag" aria-hidden="true"><Mark class="tag-mark" /><span>CCTV<br />solutions</span></div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero { background: linear-gradient(180deg, rgba(9, 24, 37, 1) 0%, rgba(12, 27, 40, 1) 100%); color: var(--text-on-ink); overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(22rem, 0.88fr); align-items: center; gap: clamp(3rem, 7vw, 6rem); min-height: min(42rem, calc(100svh - 4.25rem)); padding-block: clamp(3.5rem, 6vw, 5.5rem); }
+  .copy { position: relative; z-index: 1; max-width: 36rem; }
+  .eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; color: var(--gold); font-size: var(--step--1); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .eyebrow-line { width: 2rem; height: 2px; background: linear-gradient(90deg, var(--blue), var(--gold)); }
+  h1 { max-width: 11ch; font-size: clamp(2.7rem, 4.2vw, 4.25rem); font-weight: 650; line-height: 1.04; }
+  .lead { margin-top: 1.5rem; font-size: var(--step-1); line-height: 1.55; color: var(--text-on-ink-muted); max-width: 33rem; }
+  .actions { margin-top: 2.25rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .btn-secondary { color: var(--text-on-ink); }
+  .hero-visual { position: relative; margin: 0; padding: 0 0 2.1rem 1.4rem; }
+  .hero-visual::before { content: ''; position: absolute; inset: 1.25rem 0 3.25rem 0; border-radius: 1.25rem; border: 1px solid rgba(166, 185, 210, 0.38); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22); }
+  .hero-visual img { position: relative; width: 100%; height: clamp(24rem, 37vw, 32rem); object-fit: contain; object-position: center; background: linear-gradient(180deg, #ffffff 0%, #edf2f5 100%); border-radius: 1.1rem; box-shadow: 0 32px 56px rgba(0, 0, 0, 0.3); }
+  .visual-tag { position: absolute; left: 0; bottom: 2.1rem; display: flex; align-items: center; gap: 0.7rem; padding: 0.8rem 1rem; background: linear-gradient(135deg, var(--gold) 0%, #f6cf5b 100%); color: var(--ink); font-size: 0.78rem; font-weight: 700; line-height: 1.15; text-transform: uppercase; border-radius: 0.75rem; box-shadow: 0 16px 32px rgba(15, 17, 18, 0.18); }
+  .visual-tag :global(.tag-mark) { width: 1.8rem; height: auto; }
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.85fr); gap: 2rem; min-height: 0; }
+    h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+    .hero-visual img { height: clamp(22rem, 50vw, 30rem); }
+  }
+  @media (max-width: 680px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; padding-block: 3.5rem 2rem; }
+    .copy { max-width: none; }
+    h1 { max-width: 13ch; font-size: clamp(2.45rem, 10vw, 3.25rem); }
+    .lead { font-size: 1.1rem; }
+    .hero-visual { width: calc(100% - 0.75rem); margin-left: 0.75rem; padding-left: 0.8rem; }
+    .hero-visual::before { inset: 0.8rem 0 3.1rem 0; }
+    .hero-visual img { height: 21rem; }
+    .visual-tag { bottom: 2.1rem; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-visual img { animation: image-enter 0.7s ease-out both; }
+    @keyframes image-enter { from { opacity: 0; transform: translateY(0.75rem); } to { opacity: 1; transform: translateY(0); } }
+  }
+</style>
